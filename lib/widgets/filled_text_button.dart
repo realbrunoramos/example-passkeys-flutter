@@ -6,18 +6,16 @@ class FilledTextButton extends StatelessWidget {
   final bool disabled;
   final bool isLoading;
 
-  const FilledTextButton(
-      {super.key,
-      required this.content,
-      required this.onTap,
-      this.disabled = false,
-      this.isLoading = false});
+  const FilledTextButton({
+    super.key,
+    required this.content,
+    required this.onTap,
+    this.disabled = false,
+    this.isLoading = false,
+  });
 
   void onPressed() {
-    if (isLoading) {
-      return;
-    }
-
+    if (isLoading) return;
     onTap();
   }
 
@@ -28,21 +26,42 @@ class FilledTextButton extends StatelessWidget {
 
     return ElevatedButton(
       style: ElevatedButton.styleFrom(
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(10.0),
-          ),
-          backgroundColor: Theme.of(context).colorScheme.primary,
-          disabledBackgroundColor: Colors.grey.withOpacity(0.25),
-          padding: const EdgeInsets.all(15)),
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(12),
+        ),
+        padding: const EdgeInsets.all(0),
+        backgroundColor: Colors.transparent,
+        shadowColor: Colors.black45,
+        elevation: 5,
+      ),
       onPressed: disabled ? null : onPressed,
-      child: isLoading
-          ? SizedBox(
-              height: progressIndicatorSize,
-              width: progressIndicatorSize,
-              child: CircularProgressIndicator(
-                color: Theme.of(context).colorScheme.onPrimary,
-              ))
-          : Text(content),
+      child: Container(
+        decoration: BoxDecoration(
+          gradient: LinearGradient(
+            colors: [
+              Theme.of(context).colorScheme.primary,
+              Theme.of(context).colorScheme.secondary,
+            ],
+          ),
+          borderRadius: BorderRadius.circular(12),
+        ),
+        alignment: Alignment.center,
+        child: isLoading
+            ? SizedBox(
+          height: progressIndicatorSize,
+          width: progressIndicatorSize,
+          child: CircularProgressIndicator(
+            color: Theme.of(context).colorScheme.onPrimary,
+          ),
+        )
+            : Text(
+          content,
+          style: textStyle.copyWith(
+            color: Theme.of(context).colorScheme.onPrimary,
+            fontWeight: FontWeight.bold,
+          ),
+        ),
+      ),
     );
   }
 }

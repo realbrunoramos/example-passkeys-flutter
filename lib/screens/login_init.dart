@@ -12,6 +12,7 @@ class LoginInitScreen extends HookWidget implements CorbadoScreen<LoginInitBlock
 
   LoginInitScreen(this.block);
 
+  @override
   Widget build(BuildContext context) {
     final emailController = useTextEditingController(text: block.data.loginIdentifier);
 
@@ -27,63 +28,63 @@ class LoginInitScreen extends HookWidget implements CorbadoScreen<LoginInitBlock
     return Column(
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
-        const SizedBox(
-          height: 10,
-        ),
+        const SizedBox(height: 16),
         const Padding(
           padding: EdgeInsets.symmetric(horizontal: 20, vertical: 5),
           child: Text(
-            'Welcome back',
+            'Bem-vindo de Volta',
             style: TextStyle(
-              fontSize: 40,
+              fontSize: 32,
               fontWeight: FontWeight.bold,
+              color: Color(0xFF1A237E),
             ),
           ),
         ),
         const Padding(
           padding: EdgeInsets.symmetric(horizontal: 20, vertical: 10),
           child: Text(
-            'Enter your email address to log in with passkeys or email OTP.',
+            'Insira o seu email para iniciar sessão com passkeys ou código OTP.',
             style: TextStyle(
-              fontSize: 20,
+              fontSize: 16,
+              color: Colors.black54,
             ),
           ),
         ),
         Padding(
-          padding: const EdgeInsets.symmetric(vertical: 4),
-          child:
-          TextField(
+          padding: const EdgeInsets.symmetric(vertical: 8),
+          child: TextField(
             controller: emailController,
             autofillHints: [_getAutofillHint()],
-            decoration: const InputDecoration(
-              border: OutlineInputBorder(),
-              hintText: 'Email address',
+            decoration: InputDecoration(
+              labelText: 'Email',
+              prefixIcon: const Icon(Icons.email),
+              border: OutlineInputBorder(
+                borderRadius: BorderRadius.circular(12),
+              ),
             ),
           ),
         ),
         MaybeGenericError(message: block.data.loginIdentifierError?.translatedError),
-        const SizedBox(height: 20),
+        const SizedBox(height: 24),
         SizedBox(
           width: double.infinity,
           height: 50,
-          child:
-          FilledTextButton(
+          child: FilledTextButton(
             isLoading: block.data.primaryLoading,
             onTap: () async {
               final email = emailController.value.text;
               await block.submitLogin(loginIdentifier: email);
             },
-            content: 'Login',
+            content: 'Iniciar Sessão',
           ),
         ),
-        const SizedBox(height: 10),
+        const SizedBox(height: 16),
         SizedBox(
           width: double.infinity,
           height: 50,
-          child:
-          OutlinedTextButton(
+          child: OutlinedTextButton(
             onTap: block.navigateToSignup,
-            content: 'Create a new account',
+            content: 'Criar Nova Conta',
           ),
         ),
       ],
@@ -92,8 +93,6 @@ class LoginInitScreen extends HookWidget implements CorbadoScreen<LoginInitBlock
 
   String _getAutofillHint() {
     if (kIsWeb) {
-      // On web, only the first hint will be included in autocomplete
-      // See: https://api.flutter.dev/flutter/widgets/EditableText/autofillHints.html
       return 'username webauthn';
     } else {
       return AutofillHints.username;

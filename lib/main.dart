@@ -11,20 +11,13 @@ import 'config.dart';
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
 
-  // This is a nice pattern if you need to initialize some of your services
-  // before the app starts.
-  // As we are using riverpod this initialization happens inside providers.
-  // First we show a loading page.
   runApp(const LoadingPage());
 
-  // Now we do the initialization.
   final projectId = getProjectID();
 
   final corbadoAuth = CorbadoAuth();
   await corbadoAuth.init(projectId: projectId);
 
-  // Finally we override the providers that needed initialization.
-  // Now the real app can be loaded.
   runApp(ProviderScope(
     overrides: [
       corbadoProvider.overrideWithValue(corbadoAuth),
@@ -46,19 +39,33 @@ class MyApp extends ConsumerWidget {
         routerDelegate: router.routerDelegate,
         routeInformationProvider: router.routeInformationProvider,
         theme: ThemeData(
-          useMaterial3: false,
+          useMaterial3: true,
+          fontFamily: 'Roboto',
           colorScheme: const ColorScheme(
             brightness: Brightness.light,
-            primary: Color(0xFF1953ff),
+            primary: Color(0xFF1A237E),
             onPrimary: Colors.white,
-            secondary: Colors.white,
-            onSecondary: Color(0xFF1953ff),
+            secondary: Color(0xFF4DD0E1),
+            onSecondary: Colors.black,
             error: Colors.redAccent,
             onError: Colors.white,
-            background: Color(0xFF1953ff),
-            onBackground: Colors.white,
-            surface: Color(0xFF1953ff),
-            onSurface: Color(0xFF1953ff),
+            background: Colors.white,
+            onBackground: Colors.black,
+            surface: Colors.white,
+            onSurface: Colors.black,
+          ),
+          scaffoldBackgroundColor: Colors.grey[100],
+          textTheme: const TextTheme(
+            displayLarge: TextStyle(fontSize: 36, fontWeight: FontWeight.bold),
+            bodyMedium: TextStyle(fontSize: 16, color: Colors.black87),
+          ),
+          inputDecorationTheme: InputDecorationTheme(
+            border: OutlineInputBorder(
+              borderRadius: BorderRadius.circular(12),
+            ),
+            filled: true,
+            fillColor: Colors.white,
+            contentPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
           ),
         ),
       ),

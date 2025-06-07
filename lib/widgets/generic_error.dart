@@ -11,11 +11,16 @@ class MaybeGenericError extends StatelessWidget {
       return Container();
     }
 
-    return Text(
+    return Padding(
+      padding: const EdgeInsets.symmetric(vertical: 8),
+      child: Text(
         message!,
         style: const TextStyle(
-          color: Colors.red,
+          color: Colors.redAccent,
           fontSize: 14,
+          fontWeight: FontWeight.w500,
+        ),
+        textAlign: TextAlign.center,
       ),
     );
   }

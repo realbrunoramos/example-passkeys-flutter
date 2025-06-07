@@ -8,33 +8,32 @@ class DebugInfo extends HookConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final corbadoAuth = ref.watch(corbadoProvider);
-
     final rpIdSnapshot = useFuture(corbadoAuth.rpId, initialData: "");
 
     return Positioned(
-      left: 4,
-      top: 4,
+      left: 8,
+      top: 8,
       child: Container(
-        padding: const EdgeInsets.all(4),
+        padding: const EdgeInsets.all(8),
         decoration: BoxDecoration(
           color: Colors.black87,
-          borderRadius: BorderRadius.circular(8),
+          borderRadius: BorderRadius.circular(12),
         ),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             SelectableText(
-              'Project ID: ${corbadoAuth.projectId}',
+              'ID do Projeto: ${corbadoAuth.projectId}',
               style: const TextStyle(
                 color: Colors.white,
-                fontSize: 10,
+                fontSize: 12,
               ),
             ),
             SelectableText(
               'RPID: ${rpIdSnapshot.data}',
               style: const TextStyle(
                 color: Colors.white,
-                fontSize: 10,
+                fontSize: 12,
               ),
             ),
           ],

@@ -20,13 +20,10 @@ class EditProfilePage extends HookConsumerWidget {
     final corbado = ref.watch(corbadoProvider);
 
     final fullName = useTextEditingController(text: user.value!.username);
-
     final email = useTextEditingController(text: user.value!.email);
 
-    // This is only an example for demonstrations purposes
     Future<void> makeRequest() async {
       final url = Uri.parse('https://www.corbado.com');
-
       final response = await http.get(
         url,
         headers: {
@@ -46,83 +43,98 @@ class EditProfilePage extends HookConsumerWidget {
           showNotificationError(context, maybeError);
         }
       });
-
       return null;
     }, [error.value]);
 
     return Scaffold(
-      appBar: AppBar(title: const Text('Corbado authentication')),
-      body: Stack(
-        children: [
-          DebugInfo(),
-          Center(
-            child: Container(
-              constraints: const BoxConstraints(maxWidth: 500),
-              child: Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 10),
+      appBar: AppBar(
+        title: const Text('Editar Perfil'),
+        backgroundColor: Theme.of(context).colorScheme.primary,
+        foregroundColor: Theme.of(context).colorScheme.onPrimary,
+        elevation: 2,
+      ),
+      body: Container(
+        decoration: BoxDecoration(
+          gradient: LinearGradient(
+            begin: Alignment.topCenter,
+            end: Alignment.bottomCenter,
+            colors: [Colors.grey[100]!, Colors.grey[300]!],
+          ),
+        ),
+        child: Stack(
+          children: [
+            DebugInfo(),
+            Center(
+              child: Container(
+                constraints: const BoxConstraints(maxWidth: 600),
+                margin: const EdgeInsets.all(16),
+                padding: const EdgeInsets.all(24),
+                decoration: BoxDecoration(
+                  color: Colors.white,
+                  borderRadius: BorderRadius.circular(16),
+                  boxShadow: [
+                    BoxShadow(
+                      color: Colors.black.withOpacity(0.1),
+                      blurRadius: 10,
+                      offset: const Offset(0, 4),
+                    ),
+                  ],
+                ),
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.center,
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     const Text(
-                      'Edit your profile',
+                      'Editar Perfil',
                       style: TextStyle(
-                        fontSize: 40,
+                        fontSize: 32,
                         fontWeight: FontWeight.bold,
+                        color: Color(0xFF1A237E),
                       ),
                     ),
-                    const SizedBox(height: 20),
-                    Padding(
-                      padding: const EdgeInsets.symmetric(vertical: 4),
-                      child: TextField(
-                        controller: fullName,
-                        decoration: const InputDecoration(
-                          border: OutlineInputBorder(),
-                          hintText: 'Full name',
+                    const SizedBox(height: 24),
+                    TextField(
+                      controller: fullName,
+                      decoration: InputDecoration(
+                        labelText: 'Nome Completo',
+                        prefixIcon: const Icon(Icons.person),
+                        border: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(12),
                         ),
                       ),
                     ),
-                    const SizedBox(height: 10),
-                    Padding(
-                      padding: const EdgeInsets.symmetric(vertical: 4),
-                      child: TextField(
-                        controller: email,
-                        enabled: false,
-                        decoration: const InputDecoration(
-                          border: OutlineInputBorder(),
-                          hintText: 'Email',
+                    const SizedBox(height: 16),
+                    TextField(
+                      controller: email,
+                      enabled: false,
+                      decoration: InputDecoration(
+                        labelText: 'Email',
+                        prefixIcon: const Icon(Icons.email),
+                        border: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(12),
                         ),
                       ),
                     ),
-                    const SizedBox(height: 10),
+                    const SizedBox(height: 24),
                     SizedBox(
                       width: double.infinity,
                       height: 50,
                       child: FilledTextButton(
                         isLoading: isLoading.value,
                         onTap: () async {
-                          if (isLoading.value) {
-                            return;
-                          }
-
+                          if (isLoading.value) return;
                           isLoading.value = true;
                           error.value = null;
-
                           try {
-                            await corbado.changeUsername(
-                                fullName: fullName.text);
-
+                            await corbado.changeUsername(fullName: fullName.text);
                             showSimpleNotification(
-                                const Text(
-                                  'Full name has been changed successfully.',
-                                  style: TextStyle(color: Colors.white),
-                                ),
-                                leading: const Icon(
-                                  Icons.check,
-                                  color: Colors.green,
-                                ),
-                                background:
-                                    Theme.of(context).colorScheme.primary);
+                              const Text(
+                                'Nome alterado com sucesso.',
+                                style: TextStyle(color: Colors.white),
+                              ),
+                              leading: const Icon(Icons.check, color: Colors.green),
+                              background: Theme.of(context).colorScheme.primary,
+                            );
                           } on CorbadoError catch (e) {
                             error.value = e.translatedError;
                           } catch (e) {
@@ -131,24 +143,24 @@ class EditProfilePage extends HookConsumerWidget {
                             isLoading.value = false;
                           }
                         },
-                        content: 'Save changes',
+                        content: 'Guardar Alterações',
                       ),
                     ),
-                    const SizedBox(height: 10),
+                    const SizedBox(height: 16),
                     SizedBox(
                       width: double.infinity,
                       height: 50,
                       child: OutlinedTextButton(
                         onTap: context.pop,
-                        content: 'Back',
+                        content: 'Voltar',
                       ),
                     ),
                   ],
                 ),
               ),
             ),
-          ),
-        ],
+          ],
+        ),
       ),
     );
   }

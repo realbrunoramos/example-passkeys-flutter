@@ -10,6 +10,7 @@ class EmailVerifyOtpScreen extends HookWidget implements CorbadoScreen<EmailVeri
 
   EmailVerifyOtpScreen(this.block);
 
+  @override
   Widget build(BuildContext context) {
     final otpController = useTextEditingController();
 
@@ -25,72 +26,72 @@ class EmailVerifyOtpScreen extends HookWidget implements CorbadoScreen<EmailVeri
     return Column(
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
-        const SizedBox(
-          height: 10,
-        ),
+        const SizedBox(height: 16),
         const Padding(
           padding: EdgeInsets.symmetric(horizontal: 20, vertical: 5),
           child: Text(
-            'Verify your email address',
+            'Verificar Email',
             style: TextStyle(
-              fontSize: 40,
+              fontSize: 32,
               fontWeight: FontWeight.bold,
+              color: Color(0xFF1A237E),
             ),
           ),
         ),
         Padding(
           padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
           child: Text(
-            'We have sent you a 6 digit code to ${block.data.email}. Please enter the code below.',
+            'Enviamos um código de 6 dígitos para ${block.data.email}. Insira o código abaixo.',
             style: const TextStyle(
-              fontSize: 20,
+              fontSize: 16,
+              color: Colors.black54,
             ),
           ),
         ),
         Padding(
-          padding: const EdgeInsets.symmetric(vertical: 4),
-          child:
-          TextField(
+          padding: const EdgeInsets.symmetric(vertical: 8),
+          child: TextField(
             controller: otpController,
-            decoration: const InputDecoration(
-              border: OutlineInputBorder(),
-              hintText: 'XXXXXX',
+            decoration: InputDecoration(
+              labelText: 'Código OTP',
+              prefixIcon: const Icon(Icons.lock),
+              border: OutlineInputBorder(
+                borderRadius: BorderRadius.circular(12),
+              ),
             ),
           ),
         ),
-        const SizedBox(height: 10),
+        const SizedBox(height: 16),
         SizedBox(
           width: double.infinity,
           height: 50,
-          child:
-          FilledTextButton(
+          child: FilledTextButton(
             isLoading: block.data.primaryLoading,
             onTap: () async {
               await block.submitOtpCode(otpController.text);
             },
-            content: 'Submit',
+            content: 'Enviar',
           ),
         ),
-        const SizedBox(height: 10),
+        const SizedBox(height: 16),
         SizedBox(
           width: double.infinity,
           height: 50,
-          child:
-          OutlinedTextButton(
+          child: OutlinedTextButton(
             onTap: block.resendEmail,
-            content: 'Resend code',
+            content: 'Reenviar Código',
           ),
         ),
-        const SizedBox(height: 10),
+        const SizedBox(height: 16),
         SizedBox(
           width: double.infinity,
           height: 50,
           child: OutlinedTextButton(
             onTap: block.navigateToEditEmail,
-            content: 'Change email',
+            content: 'Alterar Email',
           ),
         ),
-        const SizedBox(height: 10),
+        const SizedBox(height: 16),
       ],
     );
   }

@@ -6,12 +6,12 @@ import 'package:corbado_auth_example/widgets/outlined_text_button.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 
-class SignupInitScreen extends HookWidget
-    implements CorbadoScreen<SignupInitBlock> {
+class SignupInitScreen extends HookWidget implements CorbadoScreen<SignupInitBlock> {
   final SignupInitBlock block;
 
   SignupInitScreen(this.block);
 
+  @override
   Widget build(BuildContext context) {
     final email = block.data.email;
     final fullName = block.data.fullName;
@@ -21,7 +21,6 @@ class SignupInitScreen extends HookWidget
     }
 
     final emailController = useTextEditingController(text: email.value);
-
     final fullNameController = useTextEditingController(text: fullName?.value);
 
     useEffect(() {
@@ -37,37 +36,39 @@ class SignupInitScreen extends HookWidget
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
         MaybeGenericError(message: block.error?.translatedError),
-        const SizedBox(
-          height: 10,
-        ),
+        const SizedBox(height: 16),
         const Padding(
           padding: EdgeInsets.symmetric(horizontal: 20, vertical: 5),
           child: Text(
-            'Tired of passwords?',
+            'Cansado de Palavras-passe?',
             style: TextStyle(
-              fontSize: 40,
+              fontSize: 32,
               fontWeight: FontWeight.bold,
+              color: Color(0xFF1A237E),
             ),
           ),
         ),
         const Padding(
           padding: EdgeInsets.symmetric(horizontal: 20, vertical: 10),
           child: Text(
-            'Sign up using your biometrics like fingerprint or face.',
+            'Registe-se usando biometria, como impressão digital ou reconhecimento facial.',
             style: TextStyle(
-              fontSize: 20,
+              fontSize: 16,
+              color: Colors.black54,
             ),
           ),
         ),
         Padding(
-          padding: const EdgeInsets.symmetric(vertical: 4),
-          child:
-          TextField(
+          padding: const EdgeInsets.symmetric(vertical: 8),
+          child: TextField(
             key: const ValueKey('textfield-email'),
             controller: emailController,
-            decoration: const InputDecoration(
-              border: OutlineInputBorder(),
-              hintText: 'Email address',
+            decoration: InputDecoration(
+              labelText: 'Email',
+              prefixIcon: const Icon(Icons.email),
+              border: OutlineInputBorder(
+                borderRadius: BorderRadius.circular(12),
+              ),
             ),
           ),
         ),
@@ -76,25 +77,27 @@ class SignupInitScreen extends HookWidget
           Column(
             children: [
               Padding(
-                padding: const EdgeInsets.symmetric(vertical: 4),
+                padding: const EdgeInsets.symmetric(vertical: 8),
                 child: TextField(
                   key: const ValueKey('textfield-fullName'),
                   controller: fullNameController,
-                  decoration: const InputDecoration(
-                    border: OutlineInputBorder(),
-                    hintText: 'Full name',
+                  decoration: InputDecoration(
+                    labelText: 'Nome Completo',
+                    prefixIcon: const Icon(Icons.person),
+                    border: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(12),
+                    ),
                   ),
                 ),
               ),
               MaybeGenericError(message: fullName.error?.translatedError),
             ],
           ),
-        const SizedBox(height: 20),
+        const SizedBox(height: 24),
         SizedBox(
           width: double.infinity,
           height: 50,
-          child:
-          FilledTextButton(
+          child: FilledTextButton(
             isLoading: block.data.primaryLoading,
             onTap: () async {
               await block.submitSignupInit(
@@ -102,17 +105,16 @@ class SignupInitScreen extends HookWidget
                 fullName: fullName != null ? fullNameController.text : 'fixed',
               );
             },
-            content: 'Sign up',
+            content: 'Registar',
           ),
         ),
-        const SizedBox(height: 10),
+        const SizedBox(height: 16),
         SizedBox(
           width: double.infinity,
           height: 50,
-          child:
-          OutlinedTextButton(
+          child: OutlinedTextButton(
             onTap: block.navigateToLogin,
-            content: 'I already have an account',
+            content: 'Já tenho uma conta',
           ),
         ),
       ],

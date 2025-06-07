@@ -11,24 +11,47 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 import '../widgets/debug_info.dart';
 
 class AuthPage extends HookConsumerWidget {
-  AuthPage({super.key}) {}
+  AuthPage({super.key});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final corbadoAuth = ref.watch(corbadoProvider);
 
     return Scaffold(
-      appBar: AppBar(title: const Text('Corbado authentication')),
-      body: Stack(
-        children: [
-          DebugInfo(),
-          Center(
-            child: Container(
-              constraints: const BoxConstraints(maxWidth: 500),
-              child: Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 10),
-                child:
-                    CorbadoAuthComponent(
+      appBar: AppBar(
+        title: const Text('Autenticação Segura'),
+        backgroundColor: Theme.of(context).colorScheme.primary,
+        foregroundColor: Theme.of(context).colorScheme.onPrimary,
+        elevation: 2,
+      ),
+      body: Container(
+        decoration: BoxDecoration(
+          gradient: LinearGradient(
+            begin: Alignment.topCenter,
+            end: Alignment.bottomCenter,
+            colors: [Colors.grey[100]!, Colors.grey[300]!],
+          ),
+        ),
+        child: Stack(
+          children: [
+            DebugInfo(),
+            Center(
+              child: Container(
+                constraints: const BoxConstraints(maxWidth: 600),
+                margin: const EdgeInsets.all(16),
+                padding: const EdgeInsets.all(24),
+                decoration: BoxDecoration(
+                  color: Colors.white,
+                  borderRadius: BorderRadius.circular(16),
+                  boxShadow: [
+                    BoxShadow(
+                      color: Colors.black.withOpacity(0.1),
+                      blurRadius: 10,
+                      offset: const Offset(0, 4),
+                    ),
+                  ],
+                ),
+                child: CorbadoAuthComponent(
                   corbadoAuth: corbadoAuth,
                   components: CorbadoScreens(
                     signupInit: SignupInitScreen.new,
@@ -41,8 +64,8 @@ class AuthPage extends HookConsumerWidget {
                 ),
               ),
             ),
-          ),
-        ],
+          ],
+        ),
       ),
     );
   }

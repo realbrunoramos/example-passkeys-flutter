@@ -11,24 +11,23 @@ class PasskeyCard extends StatelessWidget {
     required this.onDelete,
   }) : super(key: key);
 
-  // Helper method to display a bottom sheet with options.
   void _showOptions(BuildContext context) {
     showModalBottomSheet(
       context: context,
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.vertical(top: Radius.circular(16)),
+      ),
       builder: (BuildContext context) {
         return Wrap(
           children: [
             ListTile(
-              leading: const Icon(Icons.delete),
-              title: const Text('Delete'),
+              leading: const Icon(Icons.delete, color: Colors.redAccent),
+              title: const Text('Eliminar'),
               onTap: () {
-                // Close the bottom sheet
                 Navigator.of(context).pop();
-                // Call onDelete callback
                 onDelete(passkey.id);
               },
             ),
-            // You can add more ListTiles for more options...
           ],
         );
       },
@@ -38,18 +37,46 @@ class PasskeyCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
-      // The long press gesture
       onLongPress: () => _showOptions(context),
       child: Card(
+        elevation: 3,
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(12),
+        ),
+        margin: const EdgeInsets.symmetric(vertical: 8),
         child: Padding(
-          padding: const EdgeInsets.all(15.0),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
+          padding: const EdgeInsets.all(16),
+          child: Row(
             children: [
-              Text('ID: ${passkey.id}'),
-              Text('Device: ${passkey.sourceOS}, ${passkey.sourceBrowser}'),
-              Text('Created: ${passkey.created}'),
-              Text('Synced: ${passkey.backupState}'),
+              Icon(
+                Icons.vpn_key,
+                color: Theme.of(context).colorScheme.primary,
+                size: 30,
+              ),
+              const SizedBox(width: 16),
+              Expanded(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      'ID: ${passkey.id}',
+                      style: const TextStyle(fontSize: 14, fontWeight: FontWeight.bold),
+                    ),
+                    Text(
+                      'Dispositivo: ${passkey.sourceOS}, ${passkey.sourceBrowser}',
+                      style: const TextStyle(fontSize: 14, color: Colors.black54),
+                    ),
+                    Text(
+                      'Criada: ${passkey.created}',
+                      style: const TextStyle(fontSize: 14, color: Colors.black54),
+                    ),
+                    Text(
+                      'Sincronizada: ${passkey.backupState}',
+                      style: const TextStyle(fontSize: 14, color: Colors.black54),
+                    ),
+                  ],
+                ),
+              ),
             ],
           ),
         ),

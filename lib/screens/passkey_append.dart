@@ -10,6 +10,7 @@ class PasskeyAppendScreen extends HookWidget implements CorbadoScreen<PasskeyApp
 
   PasskeyAppendScreen(this.block);
 
+  @override
   Widget build(BuildContext context) {
     useEffect(() {
       WidgetsBinding.instance.addPostFrameCallback((_) {
@@ -23,57 +24,64 @@ class PasskeyAppendScreen extends HookWidget implements CorbadoScreen<PasskeyApp
     return Column(
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
-        const SizedBox(height: 10),
+        const SizedBox(height: 16),
         const Padding(
           padding: EdgeInsets.symmetric(horizontal: 20, vertical: 5),
           child: Text(
-            'Set up your passkey',
+            'Configurar Passkey',
             style: TextStyle(
-              fontSize: 40,
+              fontSize: 32,
               fontWeight: FontWeight.bold,
+              color: Color(0xFF1A237E),
             ),
           ),
         ),
         const Padding(
           padding: EdgeInsets.symmetric(horizontal: 20, vertical: 10),
           child: Text(
-            'Quick and secure login using Apple Touch ID or Face ID instead of passwords.',
+            'Inicie sessão de forma rápida e segura com Touch ID ou Face ID em vez de palavras-passe.',
             style: TextStyle(
-              fontSize: 20,
+              fontSize: 16,
+              color: Colors.black54,
             ),
           ),
         ),
-        const SizedBox(height: 20),
+        const SizedBox(height: 24),
         SizedBox(
           width: double.infinity,
           height: 50,
-          child:
-          FilledTextButton(
+          child: FilledTextButton(
             isLoading: block.data.primaryLoading,
             onTap: () async {
               await block.passkeyAppend();
             },
-            content: 'Create passkey',
+            content: 'Criar Passkey',
           ),
         ),
-        const SizedBox(height: 10),
-        if (block.data.preferredFallback != null) SizedBox(
-                width: double.infinity,
-                height: 50,
-                child: OutlinedTextButton(
-                  onTap: () => block.data.preferredFallback!.onTap(),
-                  content: block.data.preferredFallback!.label,
-                ),
-              ) else Container(),
-        if (block.data.canBeSkipped) SizedBox(
-          width: double.infinity,
-          height: 50,
-          child: OutlinedTextButton(
-            onTap: block.skipPasskeyAppend,
-            content: 'Maybe later',
-          ),
-        ) else Container(),
-        const SizedBox(height: 10),
+        const SizedBox(height: 16),
+        if (block.data.preferredFallback != null)
+          SizedBox(
+            width: double.infinity,
+            height: 50,
+            child: OutlinedTextButton(
+              onTap: () => block.data.preferredFallback!.onTap(),
+              content: block.data.preferredFallback!.label,
+            ),
+          )
+        else
+          Container(),
+        if (block.data.canBeSkipped)
+          SizedBox(
+            width: double.infinity,
+            height: 50,
+            child: OutlinedTextButton(
+              onTap: block.skipPasskeyAppend,
+              content: 'Talvez Mais Tarde',
+            ),
+          )
+        else
+          Container(),
+        const SizedBox(height: 16),
       ],
     );
   }
